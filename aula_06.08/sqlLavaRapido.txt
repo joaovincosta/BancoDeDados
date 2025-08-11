@@ -1,0 +1,64 @@
+-- marca
+create table marca (
+    idmarca int PRIMARY KEY AUTO_INCREMENT,
+    marca varchar(255) not null);
+
+-- modelo
+create table modelo (
+    idmodelo int PRIMARY KEY AUTO_INCREMENT,
+    modelo varchar(255) not null,
+	idmarca int,
+	FOREIGN KEY (idmarca) REFERENCES marca (idmarca));
+
+-- endereco
+create table endereco (
+    idendereco int PRIMARY KEY AUTO_INCREMENT,
+    rua varchar(100) not null,
+    bairro varchar(50) not null,
+    numero varchar(10) not null,
+    cidade varchar(50) not null,
+    estado char(2) not null,
+    cep varchar(10) not null);
+
+-- cliente
+create table cliente (
+    idcliente int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(255) not null,
+    nascimento date not null,
+    telefone varchar(20),
+    email varchar(100),
+    idendereco int,
+	FOREIGN KEY (idendereco) REFERENCES endereco (idendereco));
+
+-- carro
+create table carro (
+    idcarro int PRIMARY KEY AUTO_INCREMENT,
+    placa varchar(10) not null,
+    ano int not null,
+    idcliente int,
+	FOREIGN KEY (idcliente) REFERENCES cliente (idcliente),
+    idmodelo int,
+	FOREIGN KEY (idmodelo) REFERENCES modelo (idmodelo));
+
+-- atendimento
+create table atendimento (
+    idatendimento int PRIMARY KEY AUTO_INCREMENT,
+    data date not null,
+    totalgeral decimal(10,2),
+    idcarro int,
+	FOREIGN KEY (idcarro) REFERENCES carro (idcarro));
+
+-- servico
+create table servico (
+    idservico int PRIMARY KEY AUTO_INCREMENT,
+    valor decimal(10,2) not null);
+    
+-- atendimentoservico
+create table atendimentoservico (
+    idatendimentoservico int PRIMARY KEY AUTO_INCREMENT,
+    quantidade int not null,
+    totalservico decimal(10,2),
+    idatendimento int,
+	FOREIGN KEY (idatendimento) REFERENCES atendimento (idatendimento),
+    idservico int,
+	FOREIGN KEY (idservico) REFERENCES servico (idservico));

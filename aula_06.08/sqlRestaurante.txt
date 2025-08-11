@@ -1,0 +1,52 @@
+-- garcom
+create table garcom (
+    idgarcom int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(100) not null);
+
+-- arearestaurante
+create table arearestaurante (
+    idarearestaurante int PRIMARY KEY AUTO_INCREMENT,
+    descricao varchar(100) not null);
+
+-- item
+create table item (
+    iditem int PRIMARY KEY AUTO_INCREMENT,
+    preco decimal(10,2) not null,
+    nome varchar(100) not null);
+
+-- mesa 
+create table mesa (
+    idmesa int PRIMARY KEY AUTO_INCREMENT,
+    comporta int not null,
+    idarearestaurante int,
+	FOREIGN KEY (idarearestaurante) REFERENCES arearestaurante (idarearestaurante));
+
+-- atendimento 
+create table atendimento (
+    idatendimento int PRIMARY KEY AUTO_INCREMENT,
+    qtdpessoas int not null,
+    horarioentrada datetime not null,
+    horariosaida datetime not null,
+    idgarcom int,
+	FOREIGN KEY (idgarcom) REFERENCES garcom (idgarcom),
+    idmesa int,
+	FOREIGN KEY (idmesa) REFERENCES mesa (idmesa));
+    
+-- conta
+create table conta (
+    idconta int PRIMARY KEY AUTO_INCREMENT,
+    valortotal decimal(10,2) not null,
+    data date not null,
+	valorporpessoa decimal(10,2) not null,
+    idmesa int,
+	FOREIGN KEY (idmesa) REFERENCES mesa (idmesa));
+    
+-- itensconta
+create table itensconta (
+    iditensconta int PRIMARY KEY AUTO_INCREMENT,
+    totalitem decimal(10,2) not null,
+    qtd int not null,
+    idconta int,
+    FOREIGN KEY (idconta) REFERENCES conta (idconta),
+    iditem int,
+	FOREIGN KEY (iditem) REFERENCES item (iditem));
